@@ -1,0 +1,23 @@
+
+export const communityCategories: CommunityCategory[] = [
+  "Technology",
+  "Design",
+  "Business and Entrepreneurship",
+  "Science",
+  "Health and Fitness",
+  "Gaming",
+  "Art and Creativity",
+  "Music",
+  "Education",
+  "Language Learning",
+  "Travel",
+  "Cooking and Food",
+  "Sports",
+  "Parenting",
+  "Environment and Sustainability",
+  "Fashion and Beauty",
+  "History and Archaeology",
+  "Anime and Manga",
+  "Philosophy and Ethics",
+  "Hobbies and DIY",
+];

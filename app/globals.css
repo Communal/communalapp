@@ -3,5 +3,9 @@
 @tailwind utilities;
 
 body, html {
-  @apply bg-neutral-50;
+  @apply bg-neutral-50 tracking-tight text-product-dark;
+}
+
+.communalTextLink {
+  @apply text-black hover:underline;
 }
