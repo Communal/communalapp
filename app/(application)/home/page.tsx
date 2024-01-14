@@ -17,7 +17,7 @@ export default function HomeView() {
     <>
       <Suspense>
         {!userHasCommunities && <NoCommunitiesActions />}
-      </Suspense >
+      </Suspense>
     </>
   )
 }

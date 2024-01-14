@@ -13,6 +13,7 @@ export interface CommunityCardProps {
   description?: string;
   users: CommunityUserType[];
   category: string;
+  logo?: string;
 }
 
 export default function CommunityCard({ id, communityName, title, description, users }: CommunityCardProps) {

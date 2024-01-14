@@ -1,5 +1,6 @@
 "use server";
 import { currentUser } from "@clerk/nextjs";
+import { CommunityCardProps } from "@communalapp/app/(application)/components/community-card";
 import { supabase } from "@communalapp/config/supabase-client";
 
 export type UserType = {
@@ -38,4 +39,40 @@ export async function addNewUser({ interests=[] }: { interests: string[] }) {
         communities: []
       },
     ]);
+  
+  console.log("error while adding user", error);
+  console.log("data after adding user", data);
+}
+
+export async function fetchUserCommunities(): Promise<Array<
+  Pick<CommunityCardProps, 'title'> 
+  & Pick<CommunityCardProps, 'communityName'>
+  & Pick<CommunityCardProps, 'logo'>
+  >> {
+  const user = await currentUser();
+
+  return await supabase
+    .from('communities')
+    .select('*')
+    .then(({ data: communities, error }) => {
+      if (error) {
+        console.error("Error fetching user communities:", error);
+        return [];
+      }
+
+      // Filter the communities based on the condition
+      const filteredCommunities = communities.filter(community =>
+        community.users ? user?.username === community.users[0]?.username : Boolean(null)
+      );
+
+      console.log("Fetched user communities:", filteredCommunities);
+
+      return filteredCommunities.map((community) => {
+        return {
+          title: community["title"],
+          communityName: community["community_name"],
+          logo: community["logo"]
+        }
+      })
+  })
 }
