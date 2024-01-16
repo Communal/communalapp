@@ -3,6 +3,7 @@
 import { currentUser } from "@clerk/nextjs";
 import { supabase } from "@communalapp/config/supabase-client";
 import { fetchUserCommunities } from ".";
+import { PostInterface } from "@communalapp/app/(application)/components/sections/posts-feed";
 
 export async function postForCommunity(communityName: string, content: string) {
   const user = await currentUser();
@@ -13,38 +14,37 @@ export async function postForCommunity(communityName: string, content: string) {
       "content": content,
       "community_name": communityName,
       "username": user?.username,
-      "profile_picture": user?.imageUrl || ""
+      "profile_picture": user?.imageUrl
     }
   ])
     .select()
-  
-  console.log("after posting", data);
-  console.log("error while posting", error);
 }
 
-export async function fetchCommunityPosts(communityName: string) {
+export async function fetchCommunityPosts(communityName: string): Promise<PostInterface[] & any[]> {
   let { data: posts, error } = await supabase
     .from('posts')
     .select('*')
     .eq('community_name', communityName);
   
-  console.log("POSTS WHILE FETCHING FOR COMMUNITY [", communityName, ']: ', posts);
-  return posts;
+  return posts || [];
 }
 
-export async function createFeed() {
+export async function createFeed(): Promise<PostInterface[] & any> {
   const userCommunities = await fetchUserCommunities();
-  const communityNameList = [...userCommunities.map((community) => {
-    return community.communityName
-  })];
+  const communityNameList = userCommunities.map((community) => community.communityName);
 
-  let feedContentPreload: any = [];
-  communityNameList.map(async (communityName) => {
-    const communityPostsResponse = await fetchCommunityPosts(communityName);
-    feedContentPreload.push(communityPostsResponse);
-  });
+  let feedContentPreload: PostInterface[] & any = [];
 
-  console.log("POSTS WHILE FETCHING FOR COMMUNITIES [", communityNameList, ']: ', feedContentPreload);
+  await Promise.all(
+    communityNameList.map(async (communityName) => {
+      const communityPostsResponse = await fetchCommunityPosts(communityName);
+      if (communityPostsResponse?.length > 0) {
+        feedContentPreload.push(...communityPostsResponse);
+      }
+    })
+  );
+
+  console.log(feedContentPreload);
 
   return feedContentPreload;
 }

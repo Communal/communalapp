@@ -1,14 +1,20 @@
 "use client";
 import { createFeed } from "@communalapp/scripts";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { Box, Stack } from "craftbook";
-import { useRouter } from "next/navigation";
+import { Avatar, Body, Box, Flex, Grid, LikeButton, ShareButton, Stack } from "craftbook";
 import { useEffect, useState } from "react";
 
+import Markdown from 'react-markdown';
+
+export interface PostInterface {
+  content: string;
+  username: string;
+  id: string;
+  community_name: string;
+  profile_picture: string;
+}
+
 export function PostsFeed() {
-  const [posts, setPosts] = useState<any[]>([]);
-  const supabase = createClientComponentClient();
-  const router = useRouter();
+  const [posts, setPosts] = useState<PostInterface[] & any[]>([]);
 
   useEffect(() => {
     async function fetchPosts() {
@@ -18,29 +24,17 @@ export function PostsFeed() {
     fetchPosts();
   }, []);
 
-  useEffect(() => {
-    const channel = supabase
-      .channel('realtime-posts')
-      .on('postgres_changes', {
-        event: 'INSERT',
-        schema: 'public',
-        table: 'posts'
-      }, () => {
-        router.refresh();
-      }).subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    }
-  }, [supabase, router]);
-
   return (
-    <Stack>
+    <Stack rowGap={0}>
       {posts.map((post, index) => {
         return (
           <Post
             key={index}
-            {...post}
+            content={post.content}
+            username={post.username}
+            community_name={post.community_name}
+            id={post.id}
+            profile_picture={post.profile_picture}
           />
         )
       })}
@@ -48,12 +42,31 @@ export function PostsFeed() {
   )
 }
 
-export function Post({ content, username, community_name, profile_picture, id }: any) {
+export function Post({ content, username, community_name, profile_picture, id }: PostInterface) {
+  console.log("avatar", profile_picture);
   return (
     <Box
-      className="p-6 border-b"
+      className="px-6 py-3 border-b hover:bg-black/5"
     >
-      {"working" + content}
+      <Grid alignItems="start">
+        <Flex>
+          <Avatar
+            fallback={username[0]}
+            image={profile_picture}
+            size="sm"
+          />
+          <Body size="xs">{username}</Body>
+        </Flex>
+        <Box>
+          <Box className="post-content-wrapper mt-2">
+            <Markdown className={"md-content"}>{content}</Markdown>
+          </Box>
+          <Flex justifyContent="between" className="mt-6">
+            <LikeButton count={12} isLiked={false} />
+            <ShareButton />
+          </Flex>
+        </Box>
+      </Grid>
     </Box>
   )
 }

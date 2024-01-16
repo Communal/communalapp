@@ -13,3 +13,11 @@ body, html {
 .cl-userButtonPopoverCard {
   width: 300px;
 }
+
+.md-content > * {
+  @apply mt-4 ;
+}
+
+.md-content > * > img {
+  @apply rounded-2xl;
+}

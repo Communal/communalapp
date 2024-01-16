@@ -8,7 +8,7 @@ export default function Application({ children }: { children: React.ReactNode })
     <ViewContainer className="application-layout-container">
       <Sidebar />
       <Flex gap={0} alignItems="start">
-        <Stack className="ml-48 w-[800px]" alignItems="start">
+        <Stack className="ml-48 w-[800px]" alignItems="start" rowGap={0}>
           {children}
         </Stack>
         <UpdatesSidebar />
