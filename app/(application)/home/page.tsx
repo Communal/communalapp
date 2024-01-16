@@ -1,11 +1,12 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
-import { CommunityRecommendations } from "../components/sections/community-recommendations";
 import { checkIfUserHasCommunities } from "@communalapp/scripts";
 import { NoCommunitiesActions } from "../components/sections/no-communities-actions";
+import CreatePost from "../components/sections/create-post";
+import { PostsFeed } from "../components/sections/posts-feed";
 
 export default function HomeView() {
-  const [userHasCommunities, setUserHasCommunities] = useState<boolean>();
+  const [userHasCommunities, setUserHasCommunities] = useState<boolean>(true);
 
   useEffect(() => {
     async function checkResponse() {
@@ -13,10 +14,13 @@ export default function HomeView() {
     }
     checkResponse();
   }, []);
+
   return (
     <>
       <Suspense>
+        {userHasCommunities && <CreatePost />}
         {!userHasCommunities && <NoCommunitiesActions />}
+        <PostsFeed />
       </Suspense>
     </>
   )

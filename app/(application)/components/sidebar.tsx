@@ -1,7 +1,7 @@
 "use client";
 import { useClerk } from "@clerk/nextjs";
 import { UserType, fetchUserCommunities, getUserData } from "@communalapp/scripts";
-import { Avatar, Box, Button, LinkButton, SidebarOption, Stack } from "craftbook";
+import { Avatar, Body, Box, Button, Flex, LinkButton, SidebarOption, Stack, Subtitle } from "craftbook";
 import { Home, Search, User, Users } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -41,7 +41,7 @@ export default function Sidebar() {
               </Link>
             )
           })}
-          <Link href={`/`}>
+          <Link href={`/profile`}>
             <SidebarOption>
               <User className="w-4 h-4" />
               <span>{"Profile"}</span>
@@ -84,7 +84,8 @@ export default function Sidebar() {
           </Button>
         </Stack>
       </nav>
-      <Stack>
+      <Stack className="mb-6" rowGap={20}>
+        <Button className="truncate text-sm" variant="outline" onClick={() => window.location.href = "/create-community"}>Create Community</Button>
         <UserAccountActions />
       </Stack>
     </Box >
@@ -105,6 +106,14 @@ function UserAccountActions() {
   }, []);
 
   return (
-    <UserButton afterSignOutUrl="/sign-in" />
+    <Flex>
+      <Box className="scale-110">
+        <UserButton afterSignOutUrl="/sign-in" />
+      </Box>
+      <Flex direction="column" gap={0} alignItems="start">
+        <Body size="xs">{userData?.firstName} {userData?.lastName || <></>}</Body>
+        <Subtitle size="xs">{userData?.username && `@${userData.username}`}</Subtitle>
+      </Flex>
+    </Flex>
   )
 }

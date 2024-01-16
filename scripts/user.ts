@@ -71,7 +71,7 @@ export async function fetchUserCommunities(): Promise<Array<
         return {
           title: community["title"],
           communityName: community["community_name"],
-          logo: community["logo"]
+          logo: community["logo"],
         }
       })
   })

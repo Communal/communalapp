@@ -9,3 +9,7 @@ body, html {
 .communalTextLink {
   @apply text-black hover:underline;
 }
+
+.cl-userButtonPopoverCard {
+  width: 300px;
+}
