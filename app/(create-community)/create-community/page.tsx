@@ -1,16 +1,19 @@
 "use client";
-import { Avatar, Body, Box, Button, Card, Flex, Heading, Input, Stack, Subtitle } from "craftbook";
+import { Avatar, Body, Box, Button, Card, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuTrigger, Flex, Grid, Heading, Input, Stack, Subtitle } from "craftbook";
 import { useContext, useState } from "react";
 import { createContext } from "react";
 import { motion } from "framer-motion";
 import { uploadCommunityLogo } from "@communalapp/scripts/uploads";
 import { createCommunity } from "@communalapp/scripts";
+import { ChevronDown } from "lucide-react";
+import { communityCategories } from "@communalapp/common/consts";
 
 type CreateCommunityFormDataType = {
   communityName: string;
   title: string;
   description: string;
   imageURL?: string;
+  category?: string;
   invites?: string[];
 }
 
@@ -19,6 +22,7 @@ const INITIAL_COMMUNITY_FORM_DATA: CreateCommunityFormDataType = {
   title: "",
   description: "",
   imageURL: "",
+  category: "",
   invites: []
 }
 
@@ -73,7 +77,7 @@ export default function CreateCommunity() {
                   newCommunityData.title,
                   newCommunityData.description,
                   newCommunityData.imageURL,
-                  "Tech & Science"
+                  newCommunityData.category
                 )) {
                   window.location.href = "/home";
                 } else {
@@ -123,22 +127,50 @@ function CommunityDetailsTab() {
             })}
           />
         </Flex>
-        <Flex direction="column" alignItems="start">
-          <label className="text-sm font-medium" htmlFor="community-name">
-            {"Community Name"}
-          </label>
-          <Input
-            name="community-name"
-            autoFocus
-            className="w-full"
-            placeholder="eg: cupcake-engineers"
-            value={newCommunityData.communityName}
-            onChange={(e) => setNewCommunityData({
-              ...newCommunityData,
-              communityName: e.target.value as string
-            })}
-          />
-        </Flex>
+        <Grid cols={2} colGap={12}>
+          <Flex direction="column" alignItems="start">
+            <label className="text-sm font-medium" htmlFor="community-name">
+              {"Community Name"}
+            </label>
+            <Input
+              name="community-name"
+              autoFocus
+              className="w-full"
+              placeholder="eg: cupcake-engineers"
+              value={newCommunityData.communityName}
+              onChange={(e) => setNewCommunityData({
+                ...newCommunityData,
+                communityName: e.target.value as string
+              })}
+            />
+          </Flex>
+          <Flex direction="column" alignItems="start">
+            <label className="text-sm font-medium" htmlFor="community-name">
+              {"Select your community type"}
+            </label>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline" strech className="justify-start truncate hover:scale-100">
+                  {newCommunityData.category || "Choose Category"}
+                  <ChevronDown className="w-4 h-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="bg-white overflow-scroll">
+                <DropdownMenuLabel>{communityCategories.length + " Categories"}</DropdownMenuLabel>
+                {communityCategories.map((categoryOption, index) => {
+                  return (
+                    <DropdownMenuItem key={index} onClick={() => setNewCommunityData({
+                      ...newCommunityData,
+                      category: categoryOption as string
+                    })}>
+                      {categoryOption}
+                    </DropdownMenuItem>
+                  )
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </Flex>
+        </Grid>
         <Flex direction="column" alignItems="start">
           <label className="text-sm font-medium" htmlFor="description">
             {"Description"}
