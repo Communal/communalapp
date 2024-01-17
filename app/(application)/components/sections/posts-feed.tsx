@@ -1,6 +1,8 @@
 "use client";
+import { supabase } from "@communalapp/config/supabase-client";
 import { createFeed } from "@communalapp/scripts";
 import { Avatar, Body, Box, Flex, Grid, LikeButton, ShareButton, Stack } from "craftbook";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import Markdown from 'react-markdown';
@@ -15,6 +17,7 @@ export interface PostInterface {
 
 export function PostsFeed() {
   const [posts, setPosts] = useState<PostInterface[] & any[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchPosts() {
@@ -23,6 +26,24 @@ export function PostsFeed() {
     }
     fetchPosts();
   }, []);
+
+  useEffect(() => {
+    const channel = supabase
+      .channel('realtime-posts')
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'posts'
+      }, (res) => {
+        setPosts(prevPosts => [res.new, ...prevPosts]);
+        router.refresh();
+      }).subscribe();
+
+
+    return () => {
+      supabase.removeChannel(channel);
+    }
+  }, [supabase, router]);
 
   return (
     <Stack rowGap={0}>
@@ -45,9 +66,7 @@ export function PostsFeed() {
 export function Post({ content, username, community_name, profile_picture, id }: PostInterface) {
   console.log("avatar", profile_picture);
   return (
-    <Box
-      className="px-6 py-3 border-b hover:bg-black/5"
-    >
+    <Box className="px-6 py-3 border-b hover:bg-black/5">
       <Grid alignItems="start">
         <Flex>
           <Avatar
