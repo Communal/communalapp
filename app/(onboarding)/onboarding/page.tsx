@@ -1,19 +1,23 @@
 "use client";
+import { communityCategories } from "@communalapp/common/consts";
 import { ApplicationContent } from "@communalapp/common/copy";
 import { fetchAllCategories, addNewUser } from "@communalapp/scripts";
-import { Box, Button, Card, Grid, Headline, LinkButton, Subtitle } from "craftbook";
+import { Box, Button, Card, Flex, Grid, Headline, LinkButton, Option, Subtitle } from "craftbook";
 import { useEffect, useState } from "react";
 
 export default function OnboardingFlow() {
-  const [categories, setCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
-  useEffect(() => {
-    async function fetchData() {
-      const response = await fetchAllCategories();
-      setCategories(response);
+  const handleCategorySelection = (category: string) => {
+    if (selectedCategories.includes(category)) {
+
+    } else {
+      setSelectedCategories([
+        ...selectedCategories,
+        category
+      ]);
     }
-    fetchData();
-  }, []);
+  }
 
   return (
     <Box className="h-screen flex flex-row items-center justify-center w-full">
@@ -24,23 +28,31 @@ export default function OnboardingFlow() {
         <Subtitle size="sm" className="text-center">
           {ApplicationContent.Onboarding.subtitle}
         </Subtitle>
-        <Grid className="my-12" cols={2}>
-          {categories.map((category, index) => {
+        <Box className="my-12 grid grid-cols-2 max-md:grid-cols-1 gap-2 max-lg:overflow-y-scroll max-lg:h-[400px]">
+          {communityCategories.map((category, index) => {
             return (
-              <Button variant="outline" key={index}>
+              <Option key={index} onClick={() => handleCategorySelection(category)}>
                 {category}
-              </Button>
+              </Option>
             )
           })}
-        </Grid>
-        <Box className="flex flex-row items-center justify-center">
+        </Box>
+        <Flex direction="column">
+          <Button variant="secondary"
+            onClick={() => {
+              addNewUser({ interests: selectedCategories });
+              window.location.href = "/home";
+            }}
+          >
+            Continue
+          </Button>
           <LinkButton onClick={() => {
-            addNewUser({ interests: [categories[0]] });
+            addNewUser({ interests: [] });
             window.location.href = "/home";
           }}>
             {"Do this later"}
           </LinkButton>
-        </Box>
+        </Flex>
       </Card>
     </Box>
   )

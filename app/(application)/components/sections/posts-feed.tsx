@@ -1,7 +1,8 @@
 "use client";
 import { supabase } from "@communalapp/config/supabase-client";
 import { createFeed } from "@communalapp/scripts";
-import { Avatar, Body, Box, Flex, Grid, LikeButton, ShareButton, Stack } from "craftbook";
+import { Avatar, Badge, Body, Box, Flex, Grid, LikeButton, ShareButton, Stack, Subtitle } from "craftbook";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -68,13 +69,18 @@ export function Post({ content, username, community_name, profile_picture, id }:
   return (
     <Box className="px-6 py-3 border-b hover:bg-black/5">
       <Grid alignItems="start">
-        <Flex>
-          <Avatar
-            fallback={username[0]}
-            image={profile_picture}
-            size="sm"
-          />
-          <Body size="xs">{username}</Body>
+        <Flex gap={8}>
+          <Link href={`/@${username}`}>
+            <Avatar
+              fallback={username[0]}
+              image={profile_picture}
+              size="sm"
+            />
+          </Link>
+          <Flex direction="column" alignItems="start" gap={2}>
+            <Body size="xs">{username}</Body>
+            <Subtitle size="xs">{`in, ${community_name}`}</Subtitle>
+          </Flex>
         </Flex>
         <Box>
           <Box className="post-content-wrapper mt-2">

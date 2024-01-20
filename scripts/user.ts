@@ -62,7 +62,7 @@ export async function fetchUserCommunities(): Promise<Array<
 
       // Filter the communities based on the condition
       const filteredCommunities = communities.filter(community =>
-        community.users ? user?.username === community.users[0]?.username : Boolean(null)
+        community.users ? user?.username === community.users[0]?.username : Boolean(null) 
       );
 
       console.log("Fetched user communities:", filteredCommunities);
@@ -71,7 +71,7 @@ export async function fetchUserCommunities(): Promise<Array<
         return {
           title: community["title"],
           communityName: community["community_name"],
-          logo: community["logo"],
+          logo: community["logo"]
         }
       })
   })
