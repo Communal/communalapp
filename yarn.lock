@@ -1329,10 +1329,10 @@ cookie@0.5.0:
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.5.0.tgz#d1f5d71adec6558c58f389987c366aa47e994f8b"
   integrity sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==
 
-craftbook@1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/craftbook/-/craftbook-1.5.0.tgz#cf223faf262e38e5703e5470e235bae4bacf2754"
-  integrity sha512-SxPJgikJ7E4vZekZHVizZn7QvfUU17jncVZCGfJR3GZS51VXp/Uj9Ov2tgdSy3Bg9pmrXs4ZD9G1LhmohGdfvA==
+craftbook@1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/craftbook/-/craftbook-1.5.1.tgz#10c1b425d6d0c881d566ea0bd01a830bf117aa02"
+  integrity sha512-6eE+t10X0ZY83lHImKtAKvjZznn8z4W7fWvj6y7l4FYUuGWmMccLGIddbTpr3+KUBr8GJKfkn6x9hSsuKTgPFQ==
   dependencies:
     "@radix-ui/react-dropdown-menu" "^2.0.6"
     react "^18.2.0"

@@ -16,10 +16,10 @@ import {
   IconLinkButton,
   Stack,
   Subtitle,
+  TabMenu,
   UppercaseHeading,
 } from 'craftbook';
 import { ChevronLeft } from 'lucide-react';
-import { unstable_noStore } from 'next/cache';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
@@ -61,6 +61,7 @@ export default function CommunityPage({
       } else {
         setCommunityData({ ...response });
         setIsUserAdmin((await checkUserIfAdmin(response.users)) as boolean);
+        console.log("users in client side", response.users);
         setIsUserMember(
           (await checkIfPartOfCommunity(response.users)) as boolean,
         );
@@ -112,7 +113,7 @@ export default function CommunityPage({
                     onFollow={() =>
                       followCommunity(communityData.communityName)
                     }
-                    onUnfollow={() => {}}
+                    onUnfollow={() => { }}
                     isFollowing={isUserMember}
                   />
                 </>
@@ -121,6 +122,11 @@ export default function CommunityPage({
           </Flex>
         </Box>
       )}
+      <TabMenu
+        options={["timeline", "initiatives", "members", "calendar"]}
+        currentOption="timeline"
+        stretch
+      />
     </Stack>
   );
 }
