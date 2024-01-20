@@ -1,6 +1,6 @@
-import { Stack } from "craftbook"
-import { HeroSection } from "."
-import { Navbar } from "./navbar"
+import { Stack } from 'craftbook';
+import { HeroSection } from '.';
+import { Navbar } from './navbar';
 
 const LandingPage: React.FunctionComponent = () => {
   return (
@@ -8,9 +8,7 @@ const LandingPage: React.FunctionComponent = () => {
       <Navbar />
       <HeroSection />
     </Stack>
-  )
-}
+  );
+};
 
-export {
-  LandingPage
-}
+export { LandingPage };

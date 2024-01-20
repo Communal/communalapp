@@ -1,4 +1,4 @@
-import type { Config } from 'tailwindcss'
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
@@ -26,8 +26,8 @@ const config: Config = {
       boxShadow: {
         subtle: '0px 2px 4px 0px #00000008',
       },
-    }
+    },
   },
   plugins: [],
-}
-export default config
+};
+export default config;

@@ -1,4 +1,1 @@
-
-export function sendInviteToCommunity() {
-  
-}
+export function sendInviteToCommunity() {}

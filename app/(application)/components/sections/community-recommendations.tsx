@@ -1,22 +1,25 @@
-import { fetchAllCommunities, fetchCommunityRecommendations } from "@communalapp/scripts";
-import { Box, Flex, Heading, Stack } from "craftbook";
-import { Suspense, useEffect, useState } from "react";
-import CommunityCard, { CommunityCardProps } from "../community-card";
-import { unstable_noStore } from "next/cache";
+import {
+  fetchAllCommunities,
+  fetchCommunityRecommendations,
+} from '@communalapp/scripts';
+import { Box, Flex, Heading, Stack } from 'craftbook';
+import { Suspense, useEffect, useState } from 'react';
+import CommunityCard, { CommunityCardProps } from '../community-card';
+import { unstable_noStore } from 'next/cache';
 
 export function CommunityRecommendations() {
   return (
     <Box>
       <Flex alignItems="center" justifyContent="between">
-        <Heading size="md">{"Recommended communities to join"}</Heading>
+        <Heading size="md">{'Recommended communities to join'}</Heading>
       </Flex>
       <Stack className="mt-4 w-fit" justifyContent="start">
-        <Suspense fallback={"Loading..."}>
+        <Suspense fallback={'Loading...'}>
           <CommunityRecommendationGrid />
         </Suspense>
       </Stack>
     </Box>
-  )
+  );
 }
 
 function CommunityRecommendationGrid() {
@@ -44,8 +47,8 @@ function CommunityRecommendationGrid() {
             category={community.category}
             key={index}
           />
-        )
+        );
       })}
     </>
-  )
+  );
 }

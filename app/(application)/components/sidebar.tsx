@@ -1,18 +1,32 @@
-"use client";
-import { useClerk } from "@clerk/nextjs";
-import { UserType, fetchUserCommunities, getUserData } from "@communalapp/scripts";
-import { Avatar, Body, Box, Button, Flex, LinkButton, SidebarOption, Stack, Subtitle } from "craftbook";
-import { Home, Search, User, Users } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { UserButton } from "@clerk/clerk-react";
-import { AnimatePresence, motion } from "framer-motion";
+'use client';
+import { useClerk } from '@clerk/nextjs';
+import {
+  UserType,
+  fetchUserCommunities,
+  getUserData,
+} from '@communalapp/scripts';
+import {
+  Avatar,
+  Body,
+  Box,
+  Button,
+  Flex,
+  LinkButton,
+  SidebarOption,
+  Stack,
+  Subtitle,
+} from 'craftbook';
+import { Home, Search, User, Users } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { UserButton } from '@clerk/clerk-react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function Sidebar() {
   const ApplicationSidebarOptions = [
-    { name: "Home", icon: <Home className="w-4 h-4" />, path: "/home" },
-    { name: "Explore", icon: <Search className="w-4 h-4" />, path: "/explore" },
+    { name: 'Home', icon: <Home className="w-4 h-4" />, path: '/home' },
+    { name: 'Explore', icon: <Search className="w-4 h-4" />, path: '/explore' },
   ];
 
   const [userCommunities, setUserCommunities] = useState<any>([]);
@@ -39,57 +53,67 @@ export default function Sidebar() {
                   <span>{option.name}</span>
                 </SidebarOption>
               </Link>
-            )
+            );
           })}
           <Link href={`/profile`}>
             <SidebarOption>
               <User className="w-4 h-4" />
-              <span>{"Profile"}</span>
+              <span>{'Profile'}</span>
             </SidebarOption>
           </Link>
-          <SidebarOption className="truncate" onClick={() => setAllCommunityOpen(!allCommunityOpen)}>
+          <SidebarOption
+            className="truncate"
+            onClick={() => setAllCommunityOpen(!allCommunityOpen)}>
             <Users className="w-4 h-4" />
             All Communities
           </SidebarOption>
-          {(userCommunities.length && allCommunityOpen) ? <AnimatePresence>
-            <Box className="w-full">
-              {userCommunities.map((communityOption: any, index: number) => {
-                return (
-                  <motion.div
-                    key={index}
-                    initial={{
-                      opacity: 0,
-                      x: -(12 * (index + 1))
-                    }}
-                    animate={{
-                      opacity: 1,
-                      x: 0
-                    }}
-                    transition={{
-                      type: "just"
-                    }}
-                  >
-                    <Link href={`/comm/${communityOption.communityName}`} className="w-full">
-                      <LinkButton className="w-full justify-start rounded-lg truncate px-2">
-                        {communityOption.title}
-                      </LinkButton>
-                    </Link>
-                  </motion.div>
-                )
-              })}
-            </Box>
-          </AnimatePresence> : <></>}
-          <Button className="rounded-full mt-2">
-            {"Post"}
-          </Button>
+          {userCommunities.length && allCommunityOpen ? (
+            <AnimatePresence>
+              <Box className="w-full">
+                {userCommunities.map((communityOption: any, index: number) => {
+                  return (
+                    <motion.div
+                      key={index}
+                      initial={{
+                        opacity: 0,
+                        x: -(12 * (index + 1)),
+                      }}
+                      animate={{
+                        opacity: 1,
+                        x: 0,
+                      }}
+                      transition={{
+                        type: 'just',
+                      }}>
+                      <Link
+                        href={`/comm/${communityOption.communityName}`}
+                        className="w-full">
+                        <LinkButton className="w-full justify-start rounded-lg truncate px-2">
+                          {communityOption.title}
+                        </LinkButton>
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </Box>
+            </AnimatePresence>
+          ) : (
+            <></>
+          )}
+          <Button className="rounded-full mt-2">{'Post'}</Button>
         </Stack>
       </nav>
       <Stack className="mb-6" rowGap={20}>
-        <Button className="truncate text-sm" variant="outline" onClick={() => window.location.href = "/create-community"}>Create Community</Button>
+        <Button
+          className="truncate text-sm"
+          variant="outline"
+          onClick={() => (window.location.href = '/create-community')}>
+          Create Community
+        </Button>
         <UserAccountActions />
       </Stack>
-    </Box >
-  )
+    </Box>
+  );
 }
 
 function UserAccountActions() {
@@ -111,9 +135,13 @@ function UserAccountActions() {
         <UserButton afterSignOutUrl="/sign-in" />
       </Box>
       <Flex direction="column" gap={0} alignItems="start">
-        <Body size="xs">{userData?.firstName} {userData?.lastName || <></>}</Body>
-        <Subtitle size="xs">{userData?.username && `@${userData.username}`}</Subtitle>
+        <Body size="xs">
+          {userData?.firstName} {userData?.lastName || <></>}
+        </Body>
+        <Subtitle size="xs">
+          {userData?.username && `@${userData.username}`}
+        </Subtitle>
       </Flex>
     </Flex>
-  )
+  );
 }

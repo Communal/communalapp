@@ -1,9 +1,17 @@
-import { Body, Button, Card, Flex, Heading, Subtitle, UppercaseHeading } from "craftbook";
-import Link from "next/link";
+import {
+  Body,
+  Button,
+  Card,
+  Flex,
+  Heading,
+  Subtitle,
+  UppercaseHeading,
+} from 'craftbook';
+import Link from 'next/link';
 
 export type CommunityUserType = {
   username: string;
-  role: "member" | "admin";
+  role: 'member' | 'admin';
 };
 
 export interface CommunityCardProps {
@@ -16,14 +24,26 @@ export interface CommunityCardProps {
   logo?: string;
 }
 
-export default function CommunityCard({ id, communityName, title, description, users }: CommunityCardProps) {
+export default function CommunityCard({
+  id,
+  communityName,
+  title,
+  description,
+  users,
+}: CommunityCardProps) {
   return (
     <Link href={`/comm/${communityName}`} className="h-full">
       <Card className="w-[280px] h-full">
         <Body>{title}</Body>
-        {description && <Subtitle size="xs" className="mt-1 truncate">{description}</Subtitle>}
-        <Subtitle className="mt-2" size="xs">{users?.length} members</Subtitle>
+        {description && (
+          <Subtitle size="xs" className="mt-1 truncate">
+            {description}
+          </Subtitle>
+        )}
+        <Subtitle className="mt-2" size="xs">
+          {users?.length} members
+        </Subtitle>
       </Card>
     </Link>
-  )
+  );
 }

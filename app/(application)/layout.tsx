@@ -1,10 +1,14 @@
-"use client";
-import { Flex, Stack, ViewContainer } from "craftbook";
-import Sidebar from "./components/sidebar";
-import UpdatesSidebar from "./components/updates-sidebar";
+'use client';
+import { Flex, Stack, ViewContainer } from 'craftbook';
+import Sidebar from './components/sidebar';
+import UpdatesSidebar from './components/updates-sidebar';
 import NextTopLoader from 'nextjs-toploader';
 
-export default function Application({ children }: { children: React.ReactNode }) {
+export default function Application({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <>
       <NextTopLoader showSpinner={false} height={3} color="black" />

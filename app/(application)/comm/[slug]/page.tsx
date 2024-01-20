@@ -1,10 +1,27 @@
-"use client";
-import { checkIfPartOfCommunity, checkUserIfAdmin, followCommunity, getCommunityData } from "@communalapp/scripts";
-import { Avatar, Box, Button, Flex, FollowButton, Grid, Headline, IconLinkButton, Stack, Subtitle, UppercaseHeading } from "craftbook";
-import { ChevronLeft } from "lucide-react";
-import { unstable_noStore } from "next/cache";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+'use client';
+import {
+  checkIfPartOfCommunity,
+  checkUserIfAdmin,
+  followCommunity,
+  getCommunityData,
+} from '@communalapp/scripts';
+import {
+  Avatar,
+  Box,
+  Button,
+  Flex,
+  FollowButton,
+  Grid,
+  Headline,
+  IconLinkButton,
+  Stack,
+  Subtitle,
+  UppercaseHeading,
+} from 'craftbook';
+import { ChevronLeft } from 'lucide-react';
+import { unstable_noStore } from 'next/cache';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export type CommunityPageType = {
   communityName: string;
@@ -13,17 +30,21 @@ export type CommunityPageType = {
   users?: any[];
   description?: string;
   category: string;
-}
+};
 
-export default function CommunityPage({ params }: { params: { slug: string } }) {
+export default function CommunityPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
   const communityNameQuery = params.slug;
   const [communityData, setCommunityData] = useState<CommunityPageType>({
-    communityName: "",
-    title: "",
-    logo: "",
+    communityName: '',
+    title: '',
+    logo: '',
     users: [],
-    description: "",
-    category: ""
+    description: '',
+    category: '',
   });
 
   const [notFound, setNotFound] = useState<boolean>(false);
@@ -39,8 +60,10 @@ export default function CommunityPage({ params }: { params: { slug: string } }) 
         setNotFound(true);
       } else {
         setCommunityData({ ...response });
-        setIsUserAdmin(await checkUserIfAdmin(response.users) as boolean);
-        setIsUserMember(await checkIfPartOfCommunity(response.users) as boolean);
+        setIsUserAdmin((await checkUserIfAdmin(response.users)) as boolean);
+        setIsUserMember(
+          (await checkIfPartOfCommunity(response.users)) as boolean,
+        );
       }
     }
     fetchData();
@@ -54,40 +77,50 @@ export default function CommunityPage({ params }: { params: { slug: string } }) 
           onClick={() => router.back()}
         />
       </Box>
-      {(communityData?.title && !notFound) && <Box id="community-profile-header" className="p-6 border-b">
-        <Flex direction="column">
-          <Avatar
-            fallback={communityData?.title[0]}
-            size="lg"
-            image={communityData?.logo}
-          />
+      {communityData?.title && !notFound && (
+        <Box id="community-profile-header" className="p-6 border-b">
           <Flex direction="column">
-            <Headline size="sm">{communityData.title}</Headline>
-            <Subtitle size="md" className="text-center">{communityData.description}</Subtitle>
+            <Avatar
+              fallback={communityData?.title[0]}
+              size="lg"
+              image={communityData?.logo}
+            />
+            <Flex direction="column">
+              <Headline size="sm">{communityData.title}</Headline>
+              <Subtitle size="md" className="text-center">
+                {communityData.description}
+              </Subtitle>
+            </Flex>
+            <Grid className="my-6" cols={2} justifyContent="center" colGap={24}>
+              <Flex className="w-fit" direction="column" gap={2}>
+                <UppercaseHeading>{'members'}</UppercaseHeading>
+                <Subtitle size="sm">{communityData?.users?.length}</Subtitle>
+              </Flex>
+              <Flex className="w-fit" direction="column" gap={2}>
+                <UppercaseHeading>{'category'}</UppercaseHeading>
+                <Subtitle size="sm">{communityData?.category}</Subtitle>
+              </Flex>
+            </Grid>
+            <Box>
+              {isUserAdmin ? (
+                <Subtitle size="xs">
+                  {"You're the admin of this community"}
+                </Subtitle>
+              ) : (
+                <>
+                  <FollowButton
+                    onFollow={() =>
+                      followCommunity(communityData.communityName)
+                    }
+                    onUnfollow={() => {}}
+                    isFollowing={isUserMember}
+                  />
+                </>
+              )}
+            </Box>
           </Flex>
-          <Grid className="my-6" cols={2} justifyContent="center" colGap={24}>
-            <Flex className="w-fit" direction="column" gap={2}>
-              <UppercaseHeading>{"members"}</UppercaseHeading>
-              <Subtitle size="sm">{communityData?.users?.length}</Subtitle>
-            </Flex>
-            <Flex className="w-fit" direction="column" gap={2}>
-              <UppercaseHeading>{"category"}</UppercaseHeading>
-              <Subtitle size="sm">{communityData?.category}</Subtitle>
-            </Flex>
-          </Grid>
-          <Box>
-            {isUserAdmin ? <Subtitle size="xs">
-              {"You're the admin of this community"}
-            </Subtitle> : <>
-              <FollowButton
-                onFollow={() => followCommunity(communityData.communityName)}
-                onUnfollow={() => { }}
-                isFollowing={isUserMember}
-              />
-            </>}
-          </Box>
-        </Flex>
-      </Box>}
+        </Box>
+      )}
     </Stack>
-  )
+  );
 }

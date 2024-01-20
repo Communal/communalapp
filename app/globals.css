@@ -2,7 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-body, html {
+body,
+html {
   @apply bg-neutral-50 tracking-tight text-product-dark;
 }
 
@@ -15,7 +16,7 @@ body, html {
 }
 
 .md-content > * {
-  @apply mt-4 ;
+  @apply mt-4;
 }
 
 .md-content > * > img {
