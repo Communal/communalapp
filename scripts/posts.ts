@@ -1,15 +1,15 @@
-"use server";
+'use server';
 
-import { currentUser } from "@clerk/nextjs";
-import { supabase } from "@communalapp/config/supabase-client";
-import { fetchUserCommunities } from ".";
-import { PostInterface } from "@communalapp/app/(application)/components/sections/posts-feed";
-import { unstable_noStore } from "next/cache";
+import { currentUser } from '@clerk/nextjs';
+import { supabase } from '@communalapp/config/supabase-client';
+import { fetchUserCommunities } from '.';
+import { PostInterface } from '@communalapp/app/(application)/components/sections/posts-feed';
+import { unstable_noStore } from 'next/cache';
 
 export async function postForCommunity(communityName: string, content: string) {
   const user = await currentUser();
   const { data, error } = await supabase
-    .from("posts")
+    .from('posts')
     .insert([
       {
         content: content,
@@ -26,11 +26,11 @@ export async function fetchCommunityPosts(
 ): Promise<PostInterface[] & any[]> {
   unstable_noStore();
   let { data: posts, error } = await supabase
-    .from("posts")
-    .select("*")
-    .eq("community_name", communityName);
+    .from('posts')
+    .select('*')
+    .eq('community_name', communityName);
 
-  console.log("community posts for", communityName, posts);
+  console.log('community posts for', communityName, posts);
 
   return posts || [];
 }

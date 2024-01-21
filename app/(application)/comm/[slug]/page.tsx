@@ -52,7 +52,7 @@ export default function CommunityPage({
   const [isUserAdmin, setIsUserAdmin] = useState<boolean>(false);
   const [isUserMember, setIsUserMember] = useState<boolean>(false);
 
-  const [tab, setTab] = useState("timeline");
+  const [tab, setTab] = useState('timeline');
 
   const router = useRouter();
 
@@ -76,9 +76,10 @@ export default function CommunityPage({
     <Stack>
       <Box className="border-b p-3">
         <IconLinkButton
-          children={<ChevronLeft className="h-4 w-4" />}
           onClick={() => router.back()}
-        />
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </IconLinkButton>
       </Box>
       {communityData?.title && !notFound && (
         <Box id="community-profile-header" className="p-6 border-b">
@@ -125,13 +126,13 @@ export default function CommunityPage({
         </Box>
       )}
       <TabMenu
-        options={["timeline", "initiatives", "members", "calendar"]}
+        options={['timeline', 'initiatives', 'members', 'calendar']}
         currentOption="timeline"
         stretch
         updateSelection={setTab}
       />
-      {communityData.communityName && (
-        (tab === "timeline" && <CommunityTimeline communityName={communityData.communityName} />)
+      {communityData.communityName && tab === 'timeline' && (
+        <CommunityTimeline communityName={communityData.communityName} />
       )}
     </Stack>
   );

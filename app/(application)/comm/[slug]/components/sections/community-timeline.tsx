@@ -1,16 +1,26 @@
-"use client";
-import { Post, PostInterface } from "@communalapp/app/(application)/components/sections/posts-feed";
-import { supabase } from "@communalapp/config/supabase-client";
-import { fetchCommunityPosts } from "@communalapp/scripts";
-import { Stack } from "craftbook";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+'use client';
+import {
+  Post,
+  PostInterface,
+} from '@communalapp/app/(application)/components/sections/posts-feed';
+import { supabase } from '@communalapp/config/supabase-client';
+import { fetchCommunityPosts } from '@communalapp/scripts';
+import { Stack } from 'craftbook';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-export default function CommunityTimeline({ communityName }: { communityName: string }) {
+export default function CommunityTimeline({
+  communityName,
+}: {
+  communityName: string;
+}) {
   const [posts, setPosts] = useState<PostInterface[] & any[]>([]);
   const router = useRouter();
 
-  console.log("community name in client side while rendering community posts", communityName);
+  console.log(
+    'community name in client side while rendering community posts',
+    communityName,
+  );
 
   useEffect(() => {
     async function fetchPosts() {
@@ -34,7 +44,7 @@ export default function CommunityTimeline({ communityName }: { communityName: st
           if (res.new.length) {
             res.new.map((newPost: any) => {
               setPosts((prevPosts) => [newPost, ...prevPosts]);
-            })
+            });
           }
           router.refresh();
         },
@@ -61,5 +71,5 @@ export default function CommunityTimeline({ communityName }: { communityName: st
         );
       })}
     </Stack>
-  )
+  );
 }
