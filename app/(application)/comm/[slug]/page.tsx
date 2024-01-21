@@ -22,6 +22,7 @@ import {
 import { ChevronLeft } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import CommunityTimeline from './components/sections/community-timeline';
 
 export type CommunityPageType = {
   communityName: string;
@@ -51,6 +52,8 @@ export default function CommunityPage({
   const [isUserAdmin, setIsUserAdmin] = useState<boolean>(false);
   const [isUserMember, setIsUserMember] = useState<boolean>(false);
 
+  const [tab, setTab] = useState("timeline");
+
   const router = useRouter();
 
   useEffect(() => {
@@ -61,7 +64,6 @@ export default function CommunityPage({
       } else {
         setCommunityData({ ...response });
         setIsUserAdmin((await checkUserIfAdmin(response.users)) as boolean);
-        console.log("users in client side", response.users);
         setIsUserMember(
           (await checkIfPartOfCommunity(response.users)) as boolean,
         );
@@ -126,7 +128,11 @@ export default function CommunityPage({
         options={["timeline", "initiatives", "members", "calendar"]}
         currentOption="timeline"
         stretch
+        updateSelection={setTab}
       />
+      {communityData.communityName && (
+        (tab === "timeline" && <CommunityTimeline communityName={communityData.communityName} />)
+      )}
     </Stack>
   );
 }
